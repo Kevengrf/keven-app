@@ -46,7 +46,7 @@ export default function About({ aboutText, skills, personas }: AboutProps) {
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-3">
-                        {displaySkills.map((skill, index) => (
+                        {displaySkills.map((skill: string, index: number) => (
                             <span
                                 key={index}
                                 className={clsx("px-4 py-2 rounded-lg shadow-sm font-medium border",
