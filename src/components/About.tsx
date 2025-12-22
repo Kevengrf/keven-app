@@ -22,7 +22,7 @@ export default function About({ aboutText, skills, personas }: AboutProps) {
 
     // Get skills for current persona, falling back to global skills or defaults
     const personaSkills = personas?.[currentPersona]?.skills;
-    const displaySkills = (personaSkills && personaSkills.length > 0)
+    const displaySkills: string[] = (personaSkills && personaSkills.length > 0)
         ? personaSkills
         : (skills && skills.length > 0 ? skills : defaultSkills);
 
