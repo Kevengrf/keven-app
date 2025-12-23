@@ -21,10 +21,19 @@ export default function About({ aboutText, skills, personas }: AboutProps) {
     const { currentPersona, theme } = usePersona();
 
     // Get skills for current persona, falling back to global skills or defaults
-    const personaSkills = personas?.[currentPersona]?.skills;
-    const displaySkills: string[] = (personaSkills && personaSkills.length > 0)
-        ? personaSkills
-        : (skills && skills.length > 0 ? skills : defaultSkills);
+    // Logic: Maker uses global 'skills'. Others use ONLY their specific 'skills' (or empty/default static if desired, but NOT global 'skills').
+    // This prevents Maker edits from leaking into other personas.
+
+    let displaySkills: string[] = [];
+
+    if (currentPersona === 'maker') {
+        displaySkills = (skills && skills.length > 0) ? skills : defaultSkills;
+    } else {
+        const pSkills = personas?.[currentPersona]?.skills;
+        // If specific skills exist, use them. If not, start clean (empty) or use generic defaults (not Maker's).
+        // Using [] ensures complete independence as requested.
+        displaySkills = (pSkills && pSkills.length > 0) ? pSkills : [];
+    }
 
     return (
         <section id="about" className={clsx("py-20 transition-colors duration-500",
@@ -42,7 +51,7 @@ export default function About({ aboutText, skills, personas }: AboutProps) {
                     <p className={clsx("text-lg mb-8 leading-relaxed whitespace-pre-wrap",
                         currentPersona === 'hacker' ? theme.text : "text-gray-600 dark:text-gray-300"
                     )}>
-                        {aboutText || "Sou um desenvolvedor apaixonado por tecnologia e inovação. Gosto de criar aplicações que não apenas funcionam, mas que proporcionam uma ótima experiência ao usuário."}
+                        {personas?.[currentPersona]?.about_text || aboutText || "Sou um desenvolvedor apaixonado por tecnologia e inovação. Gosto de criar aplicações que não apenas funcionam, mas que proporcionam uma ótima experiência ao usuário."}
                     </p>
 
                     <div className="flex flex-wrap justify-center gap-3">

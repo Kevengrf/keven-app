@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { Database } from "@/lib/database.types";
 import { useEffect, useState, useCallback } from "react";
-import { Loader2, Save, Upload, X, Check } from "lucide-react";
+import { Loader2, Save, Upload, X, Check, Plus } from "lucide-react";
 import clsx from "clsx";
 import Image from "next/image";
 import Cropper from "react-easy-crop";
@@ -17,6 +17,7 @@ export default function AdminProfile() {
     const [uploading, setUploading] = useState(false);
     const [profile, setProfile] = useState<Partial<Profile>>({});
     const [activeTab, setActiveTab] = useState("maker");
+    const [skillInput, setSkillInput] = useState("");
 
     // Cropper State
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -133,6 +134,22 @@ export default function AdminProfile() {
         } finally {
             setUploading(false);
         }
+    };
+
+    // 3. Skill Management Helpers
+    const addSkill = () => {
+        if (!skillInput.trim()) return;
+        const currentSkills = (getValue('skills') as string[]) || [];
+        // Prevent duplicates if desired, or allow them. Assuming allow for now or check:
+        if (!currentSkills.includes(skillInput.trim())) {
+            setValue('skills', [...currentSkills, skillInput.trim()] as any);
+        }
+        setSkillInput("");
+    };
+
+    const removeSkill = (index: number) => {
+        const currentSkills = (getValue('skills') as string[]) || [];
+        setValue('skills', currentSkills.filter((_, i) => i !== index) as any);
     };
 
     return (
@@ -296,31 +313,63 @@ export default function AdminProfile() {
 
                             <div className="sm:col-span-6">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Sobre Mim (Texto)</label>
-                                <p className="text-xs text-gray-400 mb-1">Apenas o modo Maker define o texto base global.</p>
+                                <p className="text-xs text-gray-400 mb-1">Texto específico para o modo {activeTab}.</p>
                                 <textarea
-                                    disabled={activeTab !== 'maker'}
                                     rows={5}
-                                    value={profile.about_text || ""}
-                                    onChange={e => setProfile({ ...profile, about_text: e.target.value })}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm dark:bg-gray-800 dark:border-gray-700 font-normal p-2 border dark:text-white disabled:opacity-50"
+                                    value={getValue('about_text') || ""}
+                                    onChange={e => setValue('about_text', e.target.value)}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm dark:bg-gray-800 dark:border-gray-700 font-normal p-2 border dark:text-white"
                                 />
                             </div>
 
                             <div className="sm:col-span-6">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Stacks / Habilidades</label>
-                                <p className="text-xs text-gray-400 mb-1">Separe por vírgula (ex: React, Node.js, AWS)</p>
-                                <input
-                                    type="text"
-                                    value={(getValue('skills') || []).join(', ')}
-                                    onChange={e => {
-                                        const val = e.target.value;
-                                        // Split by comma, map to trim whitespace, filter empty
-                                        const skillsArray = val.split(',').map(s => s.trim()).filter(s => s.length > 0);
-                                        setValue('skills', skillsArray as any);
-                                    }}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm dark:bg-gray-800 dark:border-gray-700 font-normal p-2 border dark:text-white"
-                                    placeholder="Ex: React, TypeScript, Tailwind..."
-                                />
+                                <p className="text-xs text-gray-400 mb-2">Adicione as tecnologias uma por uma.</p>
+
+                                <div className="flex gap-2 mb-3">
+                                    <input
+                                        type="text"
+                                        value={skillInput}
+                                        onChange={(e) => setSkillInput(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                addSkill();
+                                            }
+                                        }}
+                                        className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black sm:text-sm dark:bg-gray-800 dark:border-gray-700 font-normal p-2 border dark:text-white"
+                                        placeholder="Digite uma tecnologia (ex: React) e tecle Enter..."
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={addSkill}
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-colors"
+                                    >
+                                        <Plus size={16} className="mr-2" />
+                                        Adicionar
+                                    </button>
+                                </div>
+
+                                <div className="flex flex-wrap gap-2 min-h-[40px] p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
+                                    {(!getValue('skills') || getValue('skills').length === 0) && (
+                                        <p className="text-sm text-gray-400 italic self-center w-full text-center">Nenhuma habilidade adicionada.</p>
+                                    )}
+                                    {(getValue('skills') || []).map((skill: string, index: number) => (
+                                        <span
+                                            key={index}
+                                            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600 shadow-sm group"
+                                        >
+                                            {skill}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeSkill(index)}
+                                                className="ml-2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                                            >
+                                                <X size={14} />
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
