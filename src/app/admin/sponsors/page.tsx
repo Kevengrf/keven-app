@@ -52,6 +52,7 @@ export default function AdminSponsors() {
             // Optional: Ask for name or default to filename
             const name = prompt("Nome da empresa (opcional):") || file.name;
 
+            // @ts-ignore - Supabase type inference mismatch
             const { error: dbError } = await supabase.from("sponsors").insert({ logo_url, name } as any);
             if (dbError) throw dbError;
 
