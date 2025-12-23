@@ -110,6 +110,26 @@ export interface Database {
                     image_url?: string
                     created_at?: string
                 }
+            },
+            sponsors: {
+                Row: {
+                    id: string
+                    name: string | null
+                    logo_url: string
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    name?: string | null
+                    logo_url: string
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    name?: string | null
+                    logo_url?: string
+                    created_at?: string
+                }
             }
         }
     }

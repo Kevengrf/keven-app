@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { LogOut, LayoutDashboard, FolderKanban, ImageIcon, Menu } from "lucide-react";
+import { LogOut, LayoutDashboard, FolderKanban, ImageIcon, Menu, Star } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -46,6 +46,7 @@ export default function AdminLayout({
         { name: "Perfil", href: "/admin", icon: LayoutDashboard },
         { name: "Projetos", href: "/admin/projects", icon: FolderKanban },
         { name: "Galeria", href: "/admin/gallery", icon: ImageIcon },
+        { name: "Agradecimentos", href: "/admin/sponsors", icon: Star },
     ];
 
     return (
