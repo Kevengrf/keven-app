@@ -30,7 +30,7 @@ export default function Header() {
 
                     {/* Centered Persona Switcher (Desktop) */}
                     <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
-                        <PersonaSwitcher />
+                        <PersonaSwitcher tooltipSide="bottom" />
                     </div>
 
                     {/* Desktop Nav */}
@@ -81,7 +81,7 @@ export default function Header() {
 
             {/* Mobile Fixed Persona Switcher - Outside Header to avoid stacking context issues */}
             <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-                <PersonaSwitcher className="bg-white/90 dark:bg-black/90 backdrop-blur-md shadow-2xl border border-gray-200 dark:border-gray-800" />
+                <PersonaSwitcher className="bg-white/90 dark:bg-black/90 backdrop-blur-md shadow-2xl border border-gray-200 dark:border-gray-800" tooltipSide="top" />
             </div>
         </>
     );

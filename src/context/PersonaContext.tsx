@@ -60,6 +60,58 @@ export function PersonaProvider({ children }: { children: React.ReactNode }) {
         // Persist to local storage if desired, keeping simple for now
     };
 
+    // Auto-switch personas with idle detection
+    React.useEffect(() => {
+        let rotationInterval: NodeJS.Timeout;
+        let idleTimeout: NodeJS.Timeout;
+
+        // Function to start rotation
+        const startRotation = () => {
+            if (rotationInterval) clearInterval(rotationInterval);
+
+            const personas: PersonaType[] = ["maker", "hacker", "hipster", "hustler"];
+            rotationInterval = setInterval(() => {
+                setCurrentPersona(prev => {
+                    const currentIndex = personas.indexOf(prev);
+                    const nextIndex = (currentIndex + 1) % personas.length;
+                    return personas[nextIndex];
+                });
+            }, 5000); // Rotate every 5 seconds
+        };
+
+        // Function to stop rotation
+        const stopRotation = () => {
+            if (rotationInterval) clearInterval(rotationInterval);
+        };
+
+        // Interaction handler
+        const handleInteraction = () => {
+            stopRotation(); // Stop immediately on interaction
+
+            if (idleTimeout) clearTimeout(idleTimeout);
+
+            // Restart rotation after 10 seconds of inactivity
+            idleTimeout = setTimeout(() => {
+                startRotation();
+            }, 10000);
+        };
+
+        // Add listeners
+        const events = ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'];
+        events.forEach(event => window.addEventListener(event, handleInteraction));
+
+        // Initial start (assume idle or wait? Let's start immediately for "wow" factor, or wait 10s?
+        // User asked: "if stop using, 10s passes, then it switches".
+        // Let's start the idle timer initially.
+        handleInteraction();
+
+        return () => {
+            if (rotationInterval) clearInterval(rotationInterval);
+            if (idleTimeout) clearTimeout(idleTimeout);
+            events.forEach(event => window.removeEventListener(event, handleInteraction));
+        };
+    }, []);
+
     const getBaseBg = () => {
         if (currentPersona === 'hacker') return 'bg-black';
         if (currentPersona === 'hustler') return 'bg-slate-50 dark:bg-slate-900';

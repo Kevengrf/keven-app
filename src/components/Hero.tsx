@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { ArrowDown, FileText } from "lucide-react";
 import { usePersona } from "@/context/PersonaContext";
@@ -30,50 +30,53 @@ export default function Hero({ title, subtitle, description, photoUrl, resumeUrl
         <section className={clsx("min-h-screen flex items-center justify-center pt-20 px-6 transition-colors duration-500", theme.bg)}>
             <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
 
-                <motion.div
-                    key={currentPersona} // Re-animate on persona change
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="order-2 md:order-1 space-y-6"
-                >
-                    <h2 className={clsx("text-xl font-medium", theme.text)}>
-                        {displaySubtitle}
-                    </h2>
-                    <h1 className={clsx("text-5xl md:text-7xl font-bold tracking-tight", theme.text)}>
-                        {displayTitle}
-                    </h1>
-                    <p className={clsx("text-xl max-w-lg leading-relaxed mix-blend-difference", theme.text)}>
-                        {displayDescription}
-                    </p>
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentPersona} // Re-animate on persona change
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 20 }}
+                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                        className="order-2 md:order-1 space-y-6"
+                    >
+                        <h2 className={clsx("text-xl font-medium", theme.text)}>
+                            {displaySubtitle}
+                        </h2>
+                        <h1 className={clsx("text-5xl md:text-7xl font-bold tracking-tight", theme.text)}>
+                            {displayTitle}
+                        </h1>
+                        <p className={clsx("text-xl max-w-lg leading-relaxed mix-blend-difference", theme.text)}>
+                            {displayDescription}
+                        </p>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <a
-                            href="#projects"
-                            className={clsx(
-                                "px-8 py-3 rounded-full font-medium transition-colors border",
-                                theme.primary === "bg-black dark:bg-white"
-                                    ? "bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 border-transparent"
-                                    : `text-white border-transparent ${theme.primary} brightness-110`
-                            )}
-                        >
-                            Ver Projetos
-                        </a>
-                        <a
-                            href={resumeUrl || "/resume.pdf"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={clsx(
-                                "px-8 py-3 border rounded-full font-medium transition-colors flex items-center gap-2",
-                                theme.text,
-                                "border-current hover:opacity-70"
-                            )}
-                        >
-                            <FileText size={20} />
-                            Currículo
-                        </a>
-                    </div>
-                </motion.div>
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            <a
+                                href="#projects"
+                                className={clsx(
+                                    "px-8 py-3 rounded-full font-medium transition-colors border",
+                                    theme.primary === "bg-black dark:bg-white"
+                                        ? "bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 border-transparent"
+                                        : `text-white border-transparent ${theme.primary} brightness-110`
+                                )}
+                            >
+                                Ver Projetos
+                            </a>
+                            <a
+                                href={resumeUrl || "/resume.pdf"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={clsx(
+                                    "px-8 py-3 border rounded-full font-medium transition-colors flex items-center gap-2",
+                                    theme.text,
+                                    "border-current hover:opacity-70"
+                                )}
+                            >
+                                <FileText size={20} />
+                                Currículo
+                            </a>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
 
                 <motion.div
                     key={`photo-${currentPersona}`}
