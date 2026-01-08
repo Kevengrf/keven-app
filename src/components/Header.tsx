@@ -23,23 +23,26 @@ export default function Header() {
     return (
         <>
             <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-black/80 dark:border-gray-800">
-                <div className="container mx-auto px-6 py-4 flex justify-between items-center relative">
-                    <Link href="/" className="text-2xl font-bold tracking-tighter">
-                        Keven.
-                    </Link>
+                <div className="container mx-auto px-6 py-4 grid grid-cols-2 md:grid-cols-3 items-center">
+                    {/* Logo (Left) */}
+                    <div className="flex justify-start">
+                        <Link href="/" className="text-2xl font-bold tracking-tighter">
+                            Keven.
+                        </Link>
+                    </div>
 
-                    {/* Centered Persona Switcher (Desktop) */}
-                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2">
+                    {/* Centered Persona Switcher (Desktop) - Center Column */}
+                    <div className="hidden md:flex justify-center">
                         <PersonaSwitcher tooltipSide="bottom" />
                     </div>
 
-                    {/* Desktop Nav */}
-                    <nav className="hidden md:flex gap-8 items-center">
+                    {/* Desktop Nav (Right) - Right Column */}
+                    <nav className="hidden md:flex gap-6 lg:gap-8 items-center justify-end">
                         {links.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
-                                className="text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
+                                className="text-sm lg:text-base text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors whitespace-nowrap"
                             >
                                 {link.name}
                             </Link>
@@ -47,10 +50,12 @@ export default function Header() {
                         <LanguageSwitcher />
                     </nav>
 
-                    {/* Mobile Nav Toggle */}
-                    <button className="md:hidden" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-                        {isOpen ? <X size={24} /> : <Menu size={24} />}
-                    </button>
+                    {/* Mobile Nav Toggle (Right on Mobile) */}
+                    <div className="flex md:hidden justify-end">
+                        <button onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Mobile Menu */}
