@@ -20,4 +20,9 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withPWA(nextConfig);
+const createNextIntlPlugin = require('next-intl/plugin');
+
+const withNextIntl = createNextIntlPlugin();
+
+export default withPWA(withNextIntl(nextConfig));
+// export default withNextIntl(nextConfig);

@@ -1,21 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/i18n/routing"; // Use localized Link
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import PersonaSwitcher from "./PersonaSwitcher";
-
-const links = [
-    { name: "Sobre", href: "/#about" },
-    { name: "Projetos", href: "/#projects" },
-    { name: "Galeria", href: "/gallery" },
-    { name: "Contato", href: "/#contact" },
-    { name: "Agradecimentos", href: "/thanks" },
-];
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslations } from "next-intl";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
+    const t = useTranslations('Navigation');
+
+    const links = [
+        { name: t('about'), href: "/#about" },
+        { name: t('projects'), href: "/#projects" },
+        { name: t('gallery'), href: "/gallery" },
+        { name: t('contact'), href: "/#contact" },
+        { name: t('thanks'), href: "/thanks" },
+    ];
 
     return (
         <>
@@ -31,16 +34,17 @@ export default function Header() {
                     </div>
 
                     {/* Desktop Nav */}
-                    <nav className="hidden md:flex gap-8">
+                    <nav className="hidden md:flex gap-8 items-center">
                         {links.map((link) => (
                             <Link
-                                key={link.name}
+                                key={link.href}
                                 href={link.href}
                                 className="text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
                             >
                                 {link.name}
                             </Link>
                         ))}
+                        <LanguageSwitcher />
                     </nav>
 
                     {/* Mobile Nav Toggle */}
@@ -59,7 +63,7 @@ export default function Header() {
                         <nav className="flex flex-col gap-4">
                             {links.map((link) => (
                                 <Link
-                                    key={link.name}
+                                    key={link.href}
                                     href={link.href}
                                     onClick={() => setIsOpen(false)}
                                     className="text-lg font-medium text-gray-600 hover:text-black dark:text-gray-300 dark:hover:text-white"
@@ -67,6 +71,9 @@ export default function Header() {
                                     {link.name}
                                 </Link>
                             ))}
+                            <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                                <LanguageSwitcher />
+                            </div>
                         </nav>
                     </motion.div>
                 )}

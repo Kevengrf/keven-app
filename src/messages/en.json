@@ -1,0 +1,19 @@
+{
+    "HomePage": {
+        "title": "Hello, I am Keven William",
+        "description": "Full Stack Developer"
+    },
+    "Navigation": {
+        "home": "Home",
+        "about": "About",
+        "projects": "Projects",
+        "contact": "Contact",
+        "gallery": "Gallery",
+        "thanks": "Thanks"
+    },
+    "LocaleSwitcher": {
+        "label": "Change language",
+        "pt": "Portuguese",
+        "en": "English"
+    }
+}

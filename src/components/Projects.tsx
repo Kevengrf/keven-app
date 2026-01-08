@@ -62,6 +62,7 @@ export default function Projects({ projects }: ProjectsProps) {
                                         className={clsx("object-cover transition-transform duration-300 group-hover:scale-105",
                                             currentPersona === 'hacker' && "grayscale contrast-125 hover:grayscale-0"
                                         )}
+                                        unoptimized={project.image_url?.endsWith('.gif')}
                                     />
                                 ) : (
                                     <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 flex items-center justify-center">

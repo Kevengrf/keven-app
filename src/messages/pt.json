@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "Olá, eu sou Keven William",
+    "description": "Desenvolvedor Full Stack"
+  },
+  "Navigation": {
+    "home": "Início",
+    "about": "Sobre",
+    "projects": "Projetos",
+    "contact": "Contato",
+    "gallery": "Galeria",
+    "thanks": "Agradecimentos"
+  },
+  "LocaleSwitcher": {
+    "label": "Alterar idioma",
+    "pt": "Português",
+    "en": "English"
+  }
+}
